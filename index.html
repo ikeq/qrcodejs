@@ -1,44 +1,65 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-<title>Cross-Browser QRCode generator for Javascript</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
-<script type="text/javascript" src="jquery.min.js"></script>
-<script type="text/javascript" src="qrcode.js"></script>
-</head>
-<body>
-<input id="text" type="text" value="http://jindo.dev.naver.com/collie" style="width:80%" /><br />
-<div id="qrcode" style="width:100px; height:100px; margin-top:15px;"></div>
-
-<script type="text/javascript">
-var qrcode = new QRCode(document.getElementById("qrcode"), {
-	width : 100,
-	height : 100
-});
-
-function makeCode () {		
-	var elText = document.getElementById("text");
-	
-	if (!elText.value) {
-		alert("Input a text");
-		elText.focus();
-		return;
-	}
-	
-	qrcode.makeCode(elText.value);
-}
-
-makeCode();
-
-$("#text").
-	on("blur", function () {
-		makeCode();
-	}).
-	on("keydown", function (e) {
-		if (e.keyCode == 13) {
-			makeCode();
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>QRCode Generator</title>
+	<style>
+		body {
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+			max-width: 600px;
+			margin: 40px auto;
+			padding: 0 20px;
 		}
-	});
-</script>
+
+		#text {
+			width: 100%;
+			padding: 10px;
+			font-size: 16px;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			box-sizing: border-box;
+		}
+
+		#qrcode {
+			margin-top: 20px;
+		}
+	</style>
+</head>
+
+<body>
+	<input id="text" type="text" value="http://jindo.dev.naver.com/collie" placeholder="Enter text or URL">
+	<div id="qrcode"></div>
+
+	<script type="module">
+		import QRCode from './qrcode.js';
+
+		const textInput = document.getElementById('text');
+		const qrcode = new QRCode(document.getElementById('qrcode'), {
+			width: 200,
+			height: 200
+		});
+
+		function makeCode() {
+			const text = textInput.value.trim();
+			if (!text) {
+				alert('Please input a text');
+				textInput.focus();
+				return;
+			}
+			qrcode.makeCode(text);
+		}
+
+		makeCode();
+
+		textInput.addEventListener('input', makeCode);
+		textInput.addEventListener('keydown', (e) => {
+			if (e.key === 'Enter') {
+				makeCode();
+			}
+		});
+	</script>
 </body>
+
+</html>

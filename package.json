@@ -1,0 +1,13 @@
+{
+  "name": "qrcodejs-es",
+  "version": "0.1.0",
+  "license": "MIT",
+  "description": "Cross-browser QRCode generator for javascript",
+  "main": "qrcode.js",
+  "types": "qrcode.d.ts",
+  "author": "Sangmin Shim <ssm0123@gmail.com>",
+  "files": [
+    "qrcode.js",
+    "qrcode.d.ts"
+  ]
+}

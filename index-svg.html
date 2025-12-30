@@ -1,47 +1,71 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
-  <head>
-    <title>Cross-Browser QRCode generator for Javascript</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
-    <script type="text/javascript" src="jquery.min.js"></script>
-    <script type="text/javascript" src="qrcode.js"></script>
-  </head>
-  <body>
-  <input id="text" type="text" value="http://jindo.dev.naver.com/collie" style="width:80%" />
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QRCode Generator (SVG)</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    #text {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    svg {
+      display: block;
+      margin-top: 20px;
+      width: 200px;
+      height: 200px;
+    }
+  </style>
+</head>
+
+<body>
+  <input id="text" type="text" value="http://jindo.dev.naver.com/collie" placeholder="Enter text or URL">
   <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <g id="qrcode"/>
+    <g id="qrcode"></g>
   </svg>
-  <script type="text/javascript">
-  var qrcode = new QRCode(document.getElementById("qrcode"), {
-      width : 100,
-      height : 100,
+
+  <script type="module">
+    import QRCode from './qrcode.js';
+
+    const textInput = document.getElementById('text');
+    const qrcode = new QRCode(document.getElementById('qrcode'), {
+      width: 200,
+      height: 200,
       useSVG: true
-  });
+    });
 
-  function makeCode () {		
-      var elText = document.getElementById("text");
-
-      if (!elText.value) {
-          alert("Input a text");
-          elText.focus();
-          return;
+    function makeCode() {
+      const text = textInput.value.trim();
+      if (!text) {
+        alert('Please input a text');
+        textInput.focus();
+        return;
       }
+      qrcode.makeCode(text);
+    }
 
-      qrcode.makeCode(elText.value);
-  }
+    makeCode();
 
-  makeCode();
+    textInput.addEventListener('input', makeCode);
+    textInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        makeCode();
+      }
+    });
+  </script>
+</body>
 
-  $("#text").
-      on("blur", function () {
-          makeCode();
-      }).
-      on("keydown", function (e) {
-          if (e.keyCode == 13) {
-              makeCode();
-          }
-      });
-    </script>
-  </body>
 </html>
